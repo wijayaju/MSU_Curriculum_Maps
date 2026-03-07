@@ -1,7 +1,7 @@
 numpy
 pandas
 jupyter
-notebook==6.5.7s
+notebook==6.5.7
 jupyterlab==3.6.8
 ipywidgets
 ipykernel

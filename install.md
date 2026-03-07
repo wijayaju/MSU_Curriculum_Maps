@@ -93,7 +93,7 @@ uv --version
 From the repository root:
 
 ```bash
-uv venv
+uv venv --python 3.11
 source .venv/bin/activate
 ```
 
@@ -174,7 +174,7 @@ using IJulia
 installkernel("MSUCA-Julia", "--project=$(pwd())")
 ```
 
-This registers a Jupyter kernel that always uses the Julia environment stored in the `julia/` directory.
+This registers a Jupyter kernel that always uses the Julia environment stored in the `julia/` directory. Exit the Julia REPL using Ctrl + D.
 
 You can verify that the kernel was installed by running:
 
