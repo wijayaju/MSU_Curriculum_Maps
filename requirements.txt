@@ -1,4 +1,8 @@
-numpy==2.4.2
-pandas==3.0.1
-python-dateutil==2.9.0.post0
-six==1.17.0
+numpy
+pandas
+jupyter
+notebook==6.5.7s
+jupyterlab==3.6.8
+ipywidgets
+ipykernel
+webio-jupyter-extension==0.1.0
