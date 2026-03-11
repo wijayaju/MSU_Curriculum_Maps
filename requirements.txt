@@ -2,7 +2,7 @@ numpy
 pandas
 jupyter
 notebook==6.5.7
-jupyterlab==3.6.8
+jupyterlab>=4.0.0
 ipywidgets
 ipykernel
 webio-jupyter-extension==0.1.0
