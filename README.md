@@ -48,6 +48,9 @@ MSU_Curriculum_Maps/
 ├── LICENSE.txt
 └── README.md
 ```
+## Install Instructions
+
+Installation instructions are provided in [install_instructions.md](install_instructions.md)
 
 ## Data
 
