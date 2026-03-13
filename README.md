@@ -23,30 +23,49 @@ This repository represents the active refactoring of prior exploratory work from
 
 ```
 MSU_Curriculum_Maps/
-│
-├── data/                  # Raw and synthetic semester datasets
-│
-├── src/
-│   ├── scripts/           # Executable pipeline scripts
-│   │   ├── clean_data.py
-│   │   └── curriculum_api.py
-│   │
-│   ├── utils/             # Reserved for shared utilities
-│   └── julia/             # Reserved for future Julia integration
-│
-├── outputs/               # Generated artifacts (not version controlled)
-│
-├── webapi/                # Experimental visualization layer
-│
-├── notebooks/             # Demo and reproducibility notebooks
-│   └── reproducibility.ipynb
-│
-├── envs/                  # Local conda environments (ignored by git)
-│
-├── install.md             # Installation instructions
-├── environment.yml        # Conda environment specification
-├── LICENSE.txt
-└── README.md
+├── Manifest.toml
+├── Project.toml
+├── README.md
+├── data
+│   ├── 20250919_Registrars_Data(in).csv
+│   ├── CNS_Majors_Data.xlsx
+│   ├── Fake_majors.csv
+│   ├── Fake_registrar.csv
+│   └── Univ_of_Arizona-Aero.csv
+├── install_instructions.md
+├── julia
+│   └── src
+│       └── test_import.jl
+├── notebooks
+│   ├── reproducibility.ipynb
+│   ├── test_curriculum.ipynb
+│   └── test_install_notebook.ipynb
+├── old_work
+│   ├── Fall25_README.md
+│   ├── Graph.ipynb
+│   ├── INSTALL_AND_TEST.ipynb
+│   ├── InteractiveCurriculum_Graph_PyVis.ipynb
+│   ├── api
+│   │   ├── API_Demo.ipynb
+│   │   ├── chem_graph_depth.png
+│   │   ├── chem_graph_year.png
+│   │   └── curriculum_core.py
+│   ├── curriculum_clean.csv
+│   ├── graph_real_data.ipynb
+│   ├── graph_real_data_hierarchical.ipynb
+│   ├── install.md
+│   ├── reproducibility.ipynb
+│   └── requirements.txt
+├── outputs
+├── python
+│   └── scripts
+│       ├── clean_data.py
+│       └── curriculum_api.py
+├── requirements.txt
+└── webapi
+    ├── Quick Run Instructions.pdf
+    ├── curriculum_graph.html
+    └── requirements_webapi.txt
 ```
 ## Install Instructions
 
