@@ -26,6 +26,7 @@ Installation instructions are provided in [install_instructions.md](install_inst
 
 ```
 MSU_Curriculum_Maps/
+├── LICENSE.txt
 ├── Manifest.toml
 ├── Project.toml
 ├── README.md
@@ -63,7 +64,8 @@ MSU_Curriculum_Maps/
 ├── python
 │   └── scripts
 │       ├── clean_data.py
-│       └── curriculum_api.py
+│       ├── curriculum_api.py
+│       └── preprocess.py
 ├── requirements.txt
 └── webapi
     ├── Quick Run Instructions.pdf
