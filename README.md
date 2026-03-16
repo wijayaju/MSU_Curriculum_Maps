@@ -18,6 +18,9 @@ The long term objective is to support scalable curriculum analysis across semest
 
 This repository represents the active refactoring of prior exploratory work from previous semesters into a reproducible, script driven architecture, using the Curricular Analytics API.
 
+## Install Instructions
+
+Installation instructions are provided in [install_instructions.md](install_instructions.md)
 
 ## Repository Structure
 
@@ -67,9 +70,7 @@ MSU_Curriculum_Maps/
     ├── curriculum_graph.html
     └── requirements_webapi.txt
 ```
-## Install Instructions
 
-Installation instructions are provided in [install_instructions.md](install_instructions.md)
 
 ## Data
 
