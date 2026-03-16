@@ -107,7 +107,7 @@ and activate it with
 
 Your terminal prompt will change to show (.venv) at the start, this means the environment is active.
 
-`(MSU_Curriculum_Maps) <Computer name> MSU_Curriculum_Maps %`
+`(MSU_Curriculum_Maps) <User name> MSU_Curriculum_Maps %`
 
 ### Seventh Step, download python packages with uv:
 
@@ -246,6 +246,12 @@ Your terminal should now look like this to the left of where you type:
 
 UV is a fast and modern Python package manager. We will use it to install packages and Jupyter Lab.
 
+to see if you have uv installed try
+
+`uv --version`
+
+if you see **command uv not found** we will install uv
+
 To install UV, run this in PowerShell:
 
  `-ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
@@ -333,7 +339,9 @@ You should now be able to run the following (make sure you are in the venv you s
 
 This will open Jupyter Lab in your browser. When creating a new notebook, you should see **Julia 1.x** in the kernel list.
 
-## you can test if everything works with the test_notebook.ipynb
+## you can test if everything works with the notebook inside 
+
+## notebooks/test_install_notebook.ipynb
 
 # Everything should now be working and ready for our project notebooks!
 
