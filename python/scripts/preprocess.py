@@ -56,19 +56,6 @@ def parse_course_key(raw):
         return f"{m.group(1)} {m.group(2)}"
     return None
 
-# Convert term ordering
-def term_number(year_str, term_str):
-    """Convert Year+Term to a sequential 1-based term number."""
-    y = YEAR_ORDER.get(year_str, 5)
-    t = TERM_ORDER.get(term_str, 1)
-    # 3 terms per year
-    return (y - 1) * 3 + t
-
-# Helper: clean course name for use as a course key
-def clean_key(course_str):
-    """Normalise a course string like 'MTH 132' for lookup."""
-    return str(course_str).strip()
-
 # Build dict: course_key -> list of prereq course_keys (PRE only)
 prereq_map = {}   # course_key -> set of prereq keys
 coreq_map  = {}   # course_key -> set of coreq keys
@@ -95,6 +82,17 @@ for _, row in reqs_df.iterrows():
 # Term ordering
 YEAR_ORDER = {'Freshman': 1, 'Sophomore': 2, 'Junior': 3, 'Senior': 4}
 TERM_ORDER = {'FS': 1, 'SS': 2, 'US': 3}   # Fall, Spring, Summer
+
+def term_number(year_str, term_str):
+    """Convert Year+Term to a sequential 1-based term number."""
+    y = YEAR_ORDER.get(year_str, 5)
+    t = TERM_ORDER.get(term_str, 1)
+    # 3 terms per year
+    return (y - 1) * 3 + t
+
+def clean_key(course_str):
+    """Normalise a course string like 'MTH 132' for lookup."""
+    return str(course_str).strip()
 
 # Build CurricularAnalytics CSV for each plan
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -178,7 +176,7 @@ for plan_title in sorted(plan_titles):
             'Corequisites':               ';'.join(coreq_ids),
             'Strict-Corequisites':        '',
             'Credit Hours':               credit_hrs,
-            'Institution Credit Hours':   '',
+            'Institution':                 '',
             'Canonical Name':             raw_course,
             'Term':                       term_num,
         })
@@ -187,20 +185,23 @@ for plan_title in sorted(plan_titles):
     fname = safe_filename(plan_title)
     fpath = OUTPUT_DIR / fname
 
+    # CA format: all rows must have exactly 11 columns (pad header rows with empty fields)
+    PAD = [''] * 9  # 9 trailing empty fields after key,value
+
     with open(fpath, 'w', newline='', encoding='utf-8') as f:
         w = csv.writer(f)
-        # Header block (no leading comma — CA format uses plain key,value rows)
-        w.writerow(['Curriculum', plan_title])
-        w.writerow(['Institution', institution])
-        w.writerow(['Degree Type', degree_type])
-        w.writerow(['System Type', system_type])
-        w.writerow(['CIP', ''])
-        # Courses section header
-        w.writerow(['Courses'])
+        # Header block — each row padded to 11 columns to match CA spec
+        w.writerow(['Curriculum', plan_title] + PAD)
+        w.writerow(['Institution', institution] + PAD)
+        w.writerow(['Degree Type', degree_type] + PAD)
+        w.writerow(['System Type', system_type] + PAD)
+        w.writerow(['CIP', ''] + PAD)
+        # Courses section header — also padded, no blank line before it
+        w.writerow(['Courses'] + [''] * 10)
         w.writerow([
             'Course ID', 'Course Name', 'Prefix', 'Number',
             'Prerequisites', 'Corequisites', 'Strict-Corequisites',
-            'Credit Hours', 'Institution Credit Hours', 'Canonical Name', 'Term'
+            'Credit Hours', 'Institution', 'Canonical Name', 'Term'
         ])
         for cr in course_rows:
             w.writerow([
@@ -212,7 +213,7 @@ for plan_title in sorted(plan_titles):
                 cr['Corequisites'],
                 cr['Strict-Corequisites'],
                 cr['Credit Hours'],
-                cr['Institution Credit Hours'],
+                cr['Institution'],
                 cr['Canonical Name'],
                 cr['Term'],
             ])
