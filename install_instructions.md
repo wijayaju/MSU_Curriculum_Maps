@@ -72,13 +72,16 @@ your terminal should now look like `<Computer name> MSU_Curriculum_Maps %` to th
 
 UV is a fast and modern python package manager, we will be using this to install the packages and Jupyter lab.
 
-to install uv use 
-
-`curl -LsSf https://astral.sh/uv/install.sh | sh`
-
 to see if you have uv installed try
 
 `uv --version`
+
+if you see **command uv not found** we will install uv
+
+paste this command into the terminal to install uv
+
+`curl -LsSf https://astral.sh/uv/install.sh | sh`
+
 
 if you get "command not found" you will need to reload your terminal environment by closing out and reopening
 
@@ -137,9 +140,11 @@ OR
 
 **Julia will ask you to one of the commands to reload the path. I would reccomend running both just to be sure**
 
-`. /Users/<Computer name>/.profile`
+`source ~/.profile`
 
-`. /Users/<Computer name>/.zshrc`
+`source ~/.zshrc`
+
+`source ~/.bash_profile`
 
 **make sure you navigate back to the repository with `cd` before continuing!!**
 
@@ -163,16 +168,18 @@ this package is called IJulia this will make Julia work inside of Jupyter Lab
 
 
 
-### Eleventh step, opening Jupyter Lab:
+### [ ] Eleventh step, opening Jupyter Lab: 
 
 you should now be able to run (make sure you are in the venv!)
 
-`jupyter lab`
+`jupyter lab` 
 
 in your terminal, this will open up the familiar jupyter lab for working with our notebooks 
 When creating a new notebook, you should see **Julia 1.x** in the kernel list.
 
-## you can test if everything works with the test_notebook.ipynb
+## you can test if everything works with the notebook inside 
+
+## notebooks/test_install_notebook.ipynb
 
 # Everything now should be working and ready for our project notebooks! (Continue down for Windows Install)
 
