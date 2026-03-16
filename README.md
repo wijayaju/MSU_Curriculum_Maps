@@ -3,7 +3,7 @@
 Arkesh Das
 Samuel Abdul
 Justin Wijaya
-Zak Kozlowski
+Zachary Kozlowski
 
 CMSE 495 Data Science Capstone
 
