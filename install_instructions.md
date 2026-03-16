@@ -168,7 +168,7 @@ this package is called IJulia this will make Julia work inside of Jupyter Lab
 
 
 
-- [ ] ### Eleventh step, opening Jupyter Lab: 
+### Eleventh step, opening Jupyter Lab: 
 
 you should now be able to run (make sure you are in the venv!)
 
