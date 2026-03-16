@@ -93,40 +93,27 @@ if you get "command not found" you will need to reload your terminal environment
 
 **make sure you navigate back to the repository with `cd` before continuing!!**
 
-### Sixth step, Creating the uv virtual environment:
 
-create the virtual environment with 
-
-`uv venv --python 3.14`
-
-and activate it with 
-
-`source .venv/bin/activate`
-
-(uv will tell you the command to activate it it may differ)
-
-Your terminal prompt will change to show (.venv) at the start, this means the environment is active.
-
-`(MSU_Curriculum_Maps) <User name> MSU_Curriculum_Maps %`
-
-### Seventh Step, download python packages with uv:
+### Sixth Step, download python packages with uv:
 
 We will install all packages using the provided requirements txt file, this includes all of the Python packages we used for our scripts, we will have to install Julia packages later.
 
 This also installs Jupyter lab, which we will link to Julia 
 
-`uv pip install -r requirements.txt`
+`uv sync`
 
 the packages include 
-1. numpy==2.4.2
-2. pandas==3.0.1
-3. python-dateutil==2.9.0.post0
-4. six==1.17.0
 
-5. jupyterlab>=4.0.0
-6. webio-jupyter-extension==0.1.0
+1. ipykernel
+2. ipywidgets
+3. jupyter
+4. jupyterlab>4.0.0
+5. notebook==6.5.7
+6. numpy
+7. pandas
+8. webio-jupyter-extension==0.1.0
 
-### Eighth step, download and install Julia:
+### Seventh step, download and install Julia:
 
 we will install Julia system wide 
 
@@ -148,13 +135,13 @@ OR
 
 **make sure you navigate back to the repository with `cd` before continuing!!**
 
-### Ninth step: auto install Julia packages
+### Eighth step: auto install Julia packages
 
 This will install all of the packages required for our project using the toml files, these are basically the same concept as python packages
 
 `julia --project=. -e 'using Pkg; Pkg.instantiate(); Pkg.precompile()'`
 
-### Tenth step, link Julia to Jupyter lab:
+### Ninth step, link Julia to Jupyter lab:
 
 *did you know the JU in Jupyter stands for Julia?*
 
@@ -163,16 +150,16 @@ this package is called IJulia this will make Julia work inside of Jupyter Lab
 
 `julia -e 'using Pkg; Pkg.add("IJulia")'`
 
-### Register the kernel with the project path
+### Tenth step, Register the kernel with the project path
 `julia --project=. -e 'using IJulia; IJulia.installkernel("Julia", env=Dict("JULIA_PROJECT"=>"'$(pwd)'"))'`
 
 
 
 ### Eleventh step, opening Jupyter Lab: 
 
-you should now be able to run (make sure you are in the venv!)
+you should now be able to run 
 
-`jupyter lab` 
+`uv run jupyter lab` 
 
 in your terminal, this will open up the familiar jupyter lab for working with our notebooks 
 When creating a new notebook, you should see **Julia 1.x** in the kernel list.
@@ -266,31 +253,26 @@ If you get "command not found", close PowerShell completely and reopen it, the P
 
 **Make sure you navigate back to the repository with `cd` before continuing!!**
 
-### Sixth step, creating the UV virtual environment:
+### Sixth Step, download python packages with uv:
 
-Create the virtual environment with:
+We will install all packages using the provided requirements txt file, this includes all of the Python packages we used for our scripts, we will have to install Julia packages later.
 
-`uv venv --python 3.14`
+This also installs Jupyter lab, which we will link to Julia 
 
-Then activate it with:
+`uv sync`
 
-`.venv\Scripts\activate`
+the packages include 
 
-*UV will tell you the activation command after creating the environment, use whatever it shows if it differs from above.*
+1. ipykernel
+2. ipywidgets
+3. jupyter
+4. jupyterlab>4.0.0
+5. notebook==6.5.7
+6. numpy
+7. pandas
+8. webio-jupyter-extension==0.1.0
 
-Your terminal prompt will change to show (.venv) at the start, which means the environment is active:
-
-`(.venv) PS C:\...\MSU_Curriculum_Maps>`
-
-**Every time you open a new PowerShell window you will need to `cd` back into the repository and run `.venv\Scripts\activate` again before doing any work.**
-
-### Seventh step, download Python packages with UV:
-
-We will install all packages using the provided requirements.txt file. This includes all of the Python packages used in our scripts, as well as Jupyter Lab and the WebIO extension which we will link to Julia.
-
-`uv pip install -r requirements.txt`
-
-### Eighth step, download and install Julia:
+### Seventh step, download and install Julia:
 
 We will install Julia system-wide (not inside the virtual environment).
 
@@ -304,7 +286,7 @@ After the install finishes, **close and reopen PowerShell**, then verify:
 
 **Make sure you navigate back to the repository with `cd` before continuing!!**
 
-### Ninth step, auto-install Julia packages:
+### Eighth step, auto-install Julia packages:
 
 This will install all of the packages required for our project using the TOML files. These are basically the same concept as Python packages.
 
@@ -314,7 +296,7 @@ This will install all of the packages required for our project using the TOML fi
 This may take a few minutes the first time as Julia downloads and compiles everything.
 
 
-### Tenth step, link Julia to Jupyter Lab:
+### Ninth step, link Julia to Jupyter Lab:
 
 *Did you know the JU in Jupyter stands for Julia?*
 
@@ -331,7 +313,7 @@ this package is called IJulia this will make Julia work inside of Jupyter Lab
 
 
 
-### Eleventh step, opening Jupyter Lab:
+### Tenth step, opening Jupyter Lab:
 
 You should now be able to run the following (make sure you are in the venv you should see `(.venv)` in your prompt!):
 
