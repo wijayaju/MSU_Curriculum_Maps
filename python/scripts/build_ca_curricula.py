@@ -310,6 +310,15 @@ def build_curricula(registrar_csv, majors_xlsx, output_dir):
         assigned_prereq_count = sum(1 for row in rows if row["Prerequisites"])
         assigned_coreq_count = sum(1 for row in rows if row["Corequisites"])
 
+        # Sort rows by final term order before writing.
+        # This helps if the visualization is reading CSV rows sequentially.
+        rows.sort(
+            key=lambda r: (
+                r["Term"] if isinstance(r["Term"], int) else 999,
+                r["Course ID"],
+            )
+        )
+
         # Write CA-format CSV
         with open(out_path, "w", newline="", encoding="utf-8") as f:
             w = csv.writer(f)
