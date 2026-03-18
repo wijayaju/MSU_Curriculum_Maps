@@ -151,7 +151,7 @@ this package is called IJulia this will make Julia work inside of Jupyter Lab
 `julia -e 'using Pkg; Pkg.add("IJulia")'`
 
 ### Tenth step, Register the kernel with the project path
-`julia --project=. -e 'using IJulia; IJulia.installkernel("Julia", env=Dict("JULIA_PROJECT"=>"'$(pwd)'"))'`
+`julia --project=. -e 'using IJulia; IJulia.installkernel("Julia", env=Dict("JULIA_PROJECT"=>pwd()))'`
 
 
 
