@@ -1,8 +1,0 @@
-pandas
-numpy
-networkx
-matplotlib
-pyvis
-openpyxl
-jupyter
-notebook
