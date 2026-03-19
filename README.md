@@ -20,12 +20,13 @@ This repository represents the active refactoring of prior exploratory work from
 
 ## Install Instructions
 
-Installation instructions are provided in [install_instructions.md](install_instructions.md)
+Installation instructions are provided in [INSTALL.md](INSTALL.md)
 
 ## Repository Structure
 
 ```
 MSU_Curriculum_Maps/
+├── INSTALL.md
 ├── LICENSE.txt
 ├── Manifest.toml
 ├── Project.toml
@@ -35,42 +36,22 @@ MSU_Curriculum_Maps/
 │   ├── CNS_Majors_Data.xlsx
 │   ├── Fake_majors.csv
 │   ├── Fake_registrar.csv
-│   └── Univ_of_Arizona-Aero.csv
-├── install_instructions.md
-├── julia
-│   └── src
-│       └── test_import.jl
+│   ├── Univ_of_Arizona-Aero.csv
+│   └── ~$CNS_Majors_Data.xlsx
 ├── notebooks
-│   ├── reproducibility.ipynb
-│   ├── test_curriculum.ipynb
 │   └── test_install_notebook.ipynb
-├── old_work
-│   ├── Fall25_README.md
-│   ├── Graph.ipynb
-│   ├── INSTALL_AND_TEST.ipynb
-│   ├── InteractiveCurriculum_Graph_PyVis.ipynb
-│   ├── api
-│   │   ├── API_Demo.ipynb
-│   │   ├── chem_graph_depth.png
-│   │   ├── chem_graph_year.png
-│   │   └── curriculum_core.py
-│   ├── curriculum_clean.csv
-│   ├── graph_real_data.ipynb
-│   ├── graph_real_data_hierarchical.ipynb
-│   ├── install.md
-│   ├── reproducibility.ipynb
-│   └── requirements.txt
 ├── outputs
+├── pyproject.toml
 ├── python
 │   └── scripts
-│       ├── clean_data.py
-│       ├── curriculum_api.py
+│       ├── build_ca_curricula.py
 │       └── preprocess.py
-├── requirements.txt
+├── uv.lock
 └── webapi
     ├── Quick Run Instructions.pdf
     ├── curriculum_graph.html
     └── requirements_webapi.txt
+
 ```
 
 
@@ -145,7 +126,7 @@ Julia integration is planned but not yet implemented in this repository.
 All installation instructions are provided in:
 
 ```
-install.md
+INSTALL.md
 ```
 
 The project uses a conda based environment to ensure cross platform reproducibility across macOS and Windows systems.
@@ -159,7 +140,7 @@ envs/
 
 ### Running the Pipeline
 
-After installing the environment described in `install.md`:
+After installing the environment described in `INSTALL.md`:
 
 1. Activate the project environment
 2. Place the desired semester datasets inside `data/`
