@@ -1,13 +1,13 @@
-### Welcome to the MSU Curriculum Analytics Install Tutorial
+# MSU Curriculum Analytics Install Tutorial
 
-This tutorial entails
+Welcome to the MSU Curriculum Analytics Install Tutorial! This tutorial entails:
 
-1. Getting the data
+1. Obtaining the data
 2. Getting the Git repository
 3. Moving the data to the correct spot
 4. Moving to the repository in terminal
-5. install UV
-6. creating the UV virtual enviroment
+5. install uv
+6. creating the uv virtual enviroment
 7. Auto-Installing the required python packages with the requirements.txt
 8. downloading and installing Julia
 9. Auto-Installing the required Julia packages with the Project.toml and Manifest.Toml
@@ -16,23 +16,22 @@ This tutorial entails
 ## We will start with Mac install instructions
 **Please scroll down for Windows Install**
 
-### First step: 
+### First Step: obtaining the data
 
-Find the CNS_Majors.csv and 20250919_Registrars_Data(in).csv from the Microsoft teams "Data" folder. download these and make sure you have them ready and know where they are located after you download them.
+Find the `CNS_Majors.csv` and `20250919_Registrars_Data(in).csv` from the Microsoft teams "Data" folder. download these and make sure you have them ready and know where they are located after you download them. 
 
-## Demo Dataset
+#### NOTE: Demo Dataset
 
 For demonstration purposes, the repository also includes a sample curriculum dataset:
-
-
-`data/Univ_of_Arizona-Aero.csv`
-
-This dataset represents an example aerospace engineering curriculum and allows the visualization notebooks to run **even if the preprocessing pipeline has not yet been executed**.
+```bash
+data/Univ_of_Arizona-Aero.csv
+```
+This dataset represents an example aerospace engineering curriculum and allows the visualization notebooks to run **even if the preprocessing pipeline from the reproducability notebook has not yet been executed**.
 
 The demo notebook uses this Aerospace dataset to test that the installation was successful and that the `CurricularAnalytics` visualization tools are working correctly.
 
 
-### Second step, getting the Git repository: 
+### Second Step: getting the Git repository
 
 Open your prefered terminal app and navigate (cd) somewhere where you want to keep the repository.
 
@@ -42,7 +41,7 @@ then use our link to clone our repository
 
 XCode may ask you to download command line tools if you have never used Git before
 
-### Third step, Moving the data to the correct spot:
+### Third Step: moving the data to the correct spot
 
 you should now have a folder with all of the project materials, the next goal is to move the data downloaded in step one to the "data" folder inside of the project repository.
 
@@ -53,7 +52,7 @@ there are multiple ways to move the data
 2. using `mv` in the terminal
 3. opening 2 finder windows and dragging the data to the correct folder 
 
-### Fourth step, moving to the repository:
+### Fourth Step: moving to the repository
 
 Now we will be working in the repository for the rest of this tutorial make sure your terminal is working in the repository
 
@@ -68,9 +67,9 @@ a quick way to move to the repository in your terminal:
 
 your terminal should now look like `<Computer name> MSU_Curriculum_Maps %` to the left of where you type
 
-### Fifth step, Installing UV:
+### Fifth Step: installing uv
 
-UV is a fast and modern python package manager, we will be using this to install the packages and Jupyter lab.
+`uv` is a fast and modern python package manager, we will be using this to install the packages and Jupyter lab.
 
 to see if you have uv installed try
 
@@ -94,7 +93,7 @@ if you get "command not found" you will need to reload your terminal environment
 **make sure you navigate back to the repository with `cd` before continuing!!**
 
 
-### Sixth Step, download python packages with uv:
+### Sixth Step: download python packages with uv
 
 We will install all packages using the provided requirements txt file, this includes all of the Python packages we used for our scripts, we will have to install Julia packages later.
 
@@ -113,7 +112,7 @@ the packages include
 7. pandas
 8. webio-jupyter-extension==0.1.0
 
-### Seventh step, download and install Julia:
+### Seventh Step: download and install Julia
 
 we will install Julia system wide 
 
@@ -135,13 +134,13 @@ OR
 
 **make sure you navigate back to the repository with `cd` before continuing!!**
 
-### Eighth step: auto install Julia packages
+### Eighth Step: auto install Julia packages
 
 This will install all of the packages required for our project using the toml files, these are basically the same concept as python packages
 
 `julia --project=. -e 'using Pkg; Pkg.instantiate(); Pkg.precompile()'`
 
-### Ninth step, link Julia to Jupyter lab:
+### Ninth Step: link Julia to Jupyter lab
 
 *did you know the JU in Jupyter stands for Julia?*
 
@@ -150,44 +149,48 @@ this package is called IJulia this will make Julia work inside of Jupyter Lab
 
 `julia -e 'using Pkg; Pkg.add("IJulia")'`
 
-### Tenth step, Register the kernel with the project path
+### Tenth Step: register the kernel with the project path
 `julia --project=. -e 'using IJulia; IJulia.installkernel("Julia", env=Dict("JULIA_PROJECT"=>pwd()))'`
 
 
-
-### Eleventh step, opening Jupyter Lab: 
+### Eleventh Step: opening Jupyter Lab
 
 you should now be able to run 
 
 `uv run jupyter lab` 
 
 in your terminal, this will open up the familiar jupyter lab for working with our notebooks 
-When creating a new notebook, you should see **Julia 1.x** in the kernel list.
+When creating a new notebook, you should see **Julia 1.x** in the kernel list. 
 
-## you can test if everything works with the notebook inside 
+## Testing that everything works
 
-## notebooks/test_install_notebook.ipynb
+You can test if everything works with the 
+[test_install notebook](notebooks/test_install_notebook.ipynb). 
+This notebook contains the commands needed to generate the Demo Degree plan visualization using the `Univ_of_Arizona-Aero.csv` dataset.
+
+If you would like to generate visualizations using MSU Registrar and Majors data, please follow the instructions in the 
+[reproducibility notebook](notebooks/reproducibility.ipynb).
 
 # Everything now should be working and ready for our project notebooks! (Continue down for Windows Install)
 
 ## Windows Install 
 
-### First step: 
+### First Step: obtaining the data
 
-Find the CNS_Majors.csv and 20250919_Registrars_Data(in).csv from the Microsoft teams "Data" folder. download these and make sure you have them ready and know where they are located after you download them.
+Find the `CNS_Majors.csv` and `20250919_Registrars_Data(in).csv` from the Microsoft teams "Data" folder. download these and make sure you have them ready and know where they are located after you download them. 
 
-## Demo Dataset
+#### NOTE: Demo Dataset
 
 For demonstration purposes, the repository also includes a sample curriculum dataset:
+```bash
+data/Univ_of_Arizona-Aero.csv
+```
+This dataset represents an example aerospace engineering curriculum and allows the visualization notebooks to run **even if the preprocessing pipeline from the reproducability notebook has not yet been executed**.
 
-
-`data/Univ_of_Arizona-Aero.csv`
-
-This dataset represents an example aerospace engineering curriculum and allows the visualization notebooks to run **even if the preprocessing pipeline has not yet been executed**.
 
 The demo notebook uses this Aerospace dataset to test that the installation was successful and that the `CurricularAnalytics` visualization tools are working correctly.
 
-### Second step, getting the Git repository:
+### Second Step: getting the Git repository
 
 Open **PowerShell** (search for it in the Start menu) and navigate (`cd`) somewhere where you want to keep the repository.
 
@@ -198,7 +201,7 @@ Then use our link to clone our repository:
 
 If you have never used Git before, download it from [https://git-scm.com/download/win](https://git-scm.com/download/win) and install it first. Make sure to check **"Add Git to PATH"** during setup, then close and reopen PowerShell.
 
-### Third step, moving the data to the correct spot:
+### Third Step: moving the data to the correct spot
 
 You should now have a folder with all of the project materials. The next goal is to move the data downloaded in step one to the "Data" folder inside of the project repository.
 
@@ -209,7 +212,7 @@ There are multiple ways to move the data:
 2. Use `Move-Item` in PowerShell
 3. Open 2 File Explorer windows and drag the files to the correct folder
 
-### Fourth step, moving to the repository:
+### Fourth Step: moving to the repository
 
 From now on we will be working inside the repository for the rest of this tutorial. Make sure your terminal is working in the repository folder.
 
@@ -229,9 +232,9 @@ Your terminal should now look like this to the left of where you type:
 `PS C:\...\MSU_Curriculum_Maps>`
 
 
-### Fifth step, installing UV:
+### Fifth Step: installing uv
 
-UV is a fast and modern Python package manager. We will use it to install packages and Jupyter Lab.
+`uv` is a fast and modern Python package manager. We will use it to install packages and Jupyter Lab.
 
 to see if you have uv installed try
 
@@ -239,12 +242,12 @@ to see if you have uv installed try
 
 if you see **command uv not found** we will install uv
 
-To install UV, run this in PowerShell:
+To install `uv`, run this in PowerShell:
 
  `-ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
 
 
-To check if UV installed correctly, **close and reopen PowerShell**, then run:
+To check if `uv` installed correctly, **close and reopen PowerShell**, then run:
 
 
 `uv --version`
@@ -253,7 +256,7 @@ If you get "command not found", close PowerShell completely and reopen it, the P
 
 **Make sure you navigate back to the repository with `cd` before continuing!!**
 
-### Sixth Step, download python packages with uv:
+### Sixth Step: download python packages with uv
 
 We will install all packages using the provided requirements txt file, this includes all of the Python packages we used for our scripts, we will have to install Julia packages later.
 
@@ -272,7 +275,7 @@ the packages include
 7. pandas
 8. webio-jupyter-extension==0.1.0
 
-### Seventh step, download and install Julia:
+### Seventh Step: download and install Julia
 
 We will install Julia system-wide (not inside the virtual environment).
 
@@ -286,7 +289,7 @@ After the install finishes, **close and reopen PowerShell**, then verify:
 
 **Make sure you navigate back to the repository with `cd` before continuing!!**
 
-### Eighth step, auto-install Julia packages:
+### Eighth Step: auto-install Julia packages
 
 This will install all of the packages required for our project using the TOML files. These are basically the same concept as Python packages.
 
@@ -296,7 +299,7 @@ This will install all of the packages required for our project using the TOML fi
 This may take a few minutes the first time as Julia downloads and compiles everything.
 
 
-### Ninth step, link Julia to Jupyter Lab:
+### Ninth Step: link Julia to Jupyter Lab
 
 *Did you know the JU in Jupyter stands for Julia?*
 
@@ -313,7 +316,7 @@ this package is called IJulia this will make Julia work inside of Jupyter Lab
 
 
 
-### Tenth step, opening Jupyter Lab:
+### Tenth Step: opening Jupyter Lab
 
 You should now be able to run the following (make sure you are in the venv you should see `(.venv)` in your prompt!):
 
@@ -321,13 +324,13 @@ You should now be able to run the following (make sure you are in the venv you s
 
 This will open Jupyter Lab in your browser. When creating a new notebook, you should see **Julia 1.x** in the kernel list.
 
-## you can test if everything works with the notebook inside 
+## Testing that everything works
 
-## notebooks/test_install_notebook.ipynb
+You can test if everything works with the 
+[test_install notebook](notebooks/test_install_notebook.ipynb). 
+This notebook contains the commands needed to generate the Demo Degree plan visualization using the `Univ_of_Arizona-Aero.csv` dataset.
+
+If you would like to generate visualizations using MSU Registrar and Majors data, please follow the instructions in the 
+[reproducibility notebook](notebooks/reproducibility.ipynb).
 
 # Everything should now be working and ready for our project notebooks!
-
-
-```python
-
-```
