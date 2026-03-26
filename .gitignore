@@ -31,3 +31,10 @@ dist/
 *.csv
 *.xlsx
 .jupyter/
+
+
+#data
+data/Fake_majors.csv
+data/Fake_registrar.csv
+data/CNS_Majors_Data.xlsx
+data/20250919_Registrars_Data(in).csv
