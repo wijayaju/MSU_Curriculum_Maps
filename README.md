@@ -44,7 +44,7 @@ MSU_Curriculum_Maps/
 ├── pyproject.toml
 ├── python
 │   └── scripts
-│       ├── build_ca_curricula.py
+│       ├── build_ca_curricula_v2.py
 │       └── preprocess.py
 ├── uv.lock
 └── webapi
