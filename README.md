@@ -16,7 +16,7 @@ The project standardizes registrar and major requirement datasets, constructs pr
 
 The long term objective is to support scalable curriculum analysis across semesters and colleges using a modular Python to Julia workflow.
 
-This repository represents the active refactoring of prior exploratory work from previous semesters into a reproducible, script driven architecture, using the Curricular Analytics API.
+This repository represents the active refactoring of prior exploratory work from previous semesters into a reproducible, script driven architecture, using the Curricular Analytics Julia package.
 
 ## Install Instructions
 
@@ -57,13 +57,15 @@ MSU_Curriculum_Maps/
 
 ## Data
 
-The `data/` directory contains:
+The `data/` directory is initially empty due to saftey reasons, but the user is able to add:
 
 * Registrar course data exports
 * College provided major requirement datasets
 * Synthetic datasets for testing and reproducibility
 
-The included real datasets correspond to Fall 2025. The pipeline is designed to operate on any similarly structured semester dataset placed in the `data/` directory.
+**the repo comes with one sample dataset for the user to test functionality of packages and software**
+
+The real datasets correspond to Fall 2025 and Fall ~2018. The pipeline is designed to operate on any similarly structured semester dataset placed in the `data/` directory.
 
 This project does not scrape live MSU SIS systems. All data are static exports obtained from administrative sources.
 
@@ -71,53 +73,42 @@ However, the registrar datasets are structured in Oracle PeopleSoft format, whic
 
 ## __Current__ Pipeline Architecture
 
-The workflow follows a staged design. This is mostly the pipeline from last semester. We will be redoing this pipeline based off of our work.
+The workflow follows a staged design. The entire pipeline has been rebuilt as the previous semesters work/goals were different than ours.
 
-### Stage 1 — Data Cleaning (Python)
+### Stage 1 - Data Cleaning (Python)
 
-`src/scripts/clean_data.py`
+`python/scripts/build_ca_curricula_v2.py`
 
-* Standardizes course identifiers
+* Parses the 2 datasets and extracts relevant columns
 * Normalizes prerequisite formatting
+* Builds CurricularAnalytics formatted datasets
 * Resolves structural inconsistencies
-* Produces cleaned intermediate datasets
+* Crosschecks information across input data
+* Produces ready to use CSVs for CurricularAnalytics
 
 Cleaned outputs are written to the `outputs/` directory.
 
 
-### Stage 2 — Graph Construction and Structured Access
+### Stage 2 - Data Loading
 
-`src/scripts/curriculum_api.py`
+`/outputs/`
 
-* Ingests cleaned curriculum data
-* Constructs directed prerequisite relationships
-* Builds structured course dependency representations
-* Prepares data for export and downstream use
-
-Outputs may include serialized graph structures or JSON representations suitable for analytics and visualization.
+If everything worked correctly, the script will have created many CSV files to the output directory, the user is now able to browse through the files and find the curriculum they are interested in, they will be able to explore more about it in the Julia Notebooks
 
 
-### Stage 3 — Visualization (Experimental)
+### Stage 3 - Julia Integration and Graph Building
 
-`webapi/`
+`/notebooks/reproducibility.ipynb`
 
-Contains an exploratory prototype for rendering curriculum graphs in a browser.
-
-This component is experimental and not yet a finalized production interface.
+Once the user has found what they are interested in, they can use their chosen dataset with the notebook found in this repository, if everything is installed correctly, they will be able to generate graphs of curriculum plans using the CurricularAnalytics package.
 
 
-### Stage 4 — Planned Julia Integration
 
-Future development will introduce a Julia layer inside:
+### Stage 4 - Curriculum Insights
 
-```
-src/julia/
-```
+Using the notebook the user can also explore CurricularAnalytics statistics generated in the notebooks, the user is able to explore statistics such as blocking factor, delay factor, centrailtiy, and complexity, these are detailed in the notebook.
 
-The goal is to transform cleaned Python outputs into a format compatible with CurricularAnalytics.jl for advanced structural metric computation and visualization.
-
-Julia integration is planned but not yet implemented in this repository.
-
+If there time is available, we plan to integrate data from MSUGrades, using the courses from our cleaning script, this allows us to access a different dataset that contains course information (grades, instructors, semesters) and use this in conjunction with CurriculumAnalytics.
 
 ## How to Interact With This Repository
 
@@ -127,14 +118,6 @@ All installation instructions are provided in:
 
 ```
 INSTALL.md
-```
-
-The project uses a conda based environment to ensure cross platform reproducibility across macOS and Windows systems.
-
-A local environment is created inside:
-
-```
-envs/
 ```
 
 
@@ -147,16 +130,11 @@ After installing the environment described in `INSTALL.md`:
 3. Run the cleaning stage:
 
 ```
-python src/scripts/clean_data.py
+python src/python/scripts/build_ca_curricula_v2.py
 ```
 
-4. Run the graph construction stage:
 
-```
-python src/scripts/curriculum_api.py
-```
-
-Generated artifacts will appear in:
+Generated CSV files will appear in:
 
 ```
 outputs/
@@ -173,11 +151,11 @@ notebooks/reproducibility.ipynb
 
 This notebook includes:
 
-* Description of each figure
-* Code used to generate intermediate data
-* Graph construction logic
-* Visualization formatting
-* Export procedures
+* Installation testing
+* Data loading
+* Data with CurricularAnalytics
+* Graph Vizualization
+* Curriculum Insights
 
 All figures used in final reports or presentations will have corresponding reproducibility instructions.
 
@@ -194,22 +172,10 @@ All figures used in final reports or presentations will have corresponding repro
 
 ## Research Questions
 
-* How can heterogeneous curriculum datasets be transformed into unified graph representations?
 * What structural bottlenecks emerge from prerequisite networks?
 * How do centrality and dependency depth vary across majors?
 * Can structural metrics inform curriculum design decisions?
 
-
-## Outputs
-
-The `outputs/` directory contains generated artifacts such as:
-
-* Cleaned intermediate datasets
-* Serialized graph objects
-* JSON exports
-* Visualization data files
-
-This directory is not version controlled except for minimal example files.
 
 ## Community Partner
 
