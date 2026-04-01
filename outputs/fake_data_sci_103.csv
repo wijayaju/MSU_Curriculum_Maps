@@ -1,0 +1,37 @@
+Curriculum,Data Science BS (CMSE),,,,,,,,,
+Institution,Michigan State University,,,,,,,,,
+Degree Type,BS,,,,,,,,,
+System Type,semester,,,,,,,,,
+CIP,,,,,,,,,,
+Courses,,,,,,,,,,
+Course ID,Course Name,Prefix,Number,Prerequisites,Corequisites,Strict-Corequisites,Credit Hours,Institution,Canonical Name,Term
+1,College Algebra,MTH,103,,,,3,,,"College Algebra",1
+2,Writing as Inquiry,WRA,101,,,,4,,,"Writing as Inquiry",1
+3,ISS 200-Level,ISS,200,,,,4,,,"ISS 200-Level",1
+4,General Chemistry,CEM,141,,,,4,,,"General Chemistry",1
+5,College Algebra and Trigonometry,MTH,116,1,,,3,,,"College Algebra and Trigonometry",2
+6,Calculus I,MTH,132,5,,,3,,,"Calculus I",2
+7,Introduction to Data Science,STT,180,6,,,4,,,"Introduction to Data Science",2
+8,General Chemistry Laboratory,CEM,161,4,,,1,,,"General Chemistry Laboratory",2
+9,Cell and Molecular Biology,BS,161,,,,3,,,"Cell and Molecular Biology",2
+10,IAH 201-210,IAH,201,,,,4,,,"IAH 201-210",2
+11,Calculus II,MTH,133,6,,,4,,,"Calculus II",3
+12,Computational Modeling and Data Analysis I,CMSE,201,6,,,4,,,"Computational Modeling and Data Analysis I",3
+13,Physics for Scientists and Engineers I,PHY,183,6,,,4,,,"Physics for Scientists and Engineers I",3
+14,General and Inorganic Chemistry,CEM,142,4,,,3,,,"General and Inorganic Chemistry",3
+15,ISS 300-Level,ISS,300,3,,,4,,,"ISS 300-Level",3
+16,Multivariable Calculus,MTH,234,11,,,4,,,"Multivariable Calculus",4
+17,Computational Modeling and Data Analysis II,CMSE,202,12,,,4,,,"Computational Modeling and Data Analysis II",4
+18,Physics for Scientists and Engineers II,PHY,184,13,,,4,,,"Physics for Scientists and Engineers II",4
+19,IAH 211 or Higher,IAH,211,10,,,4,,,"IAH 211 or Higher",4
+20,Matrix Algebra with Computational Applications,MTH,314,16,,,3,,,"Matrix Algebra with Computational Applications",5
+21,Probability and Statistics for Data Science,STT,380,7;16;20,,,4,,,"Probability and Statistics for Data Science",5
+22,Introduction to Programming II,CSE,232,17,,,4,,,"Introduction to Programming II",5
+23,Fundamentals of Data Science Methods,CMSE,381,12;20;7;21,,,4,,,"Fundamentals of Data Science Methods",6
+24,Algorithms and Data Structures,CSE,331,22;17,,,3,,,"Algorithms and Data Structures",6
+25,Optimization Methods in Data Science,CMSE,382,17;23,,,4,,,"Optimization Methods in Data Science",7
+26,Advanced Data Science Elective I,CMSE,4XX,24,,,3,,,"Advanced Data Science Elective I",7
+27,Advanced Data Science Elective II,CMSE,4XX,24,,,3,,,"Advanced Data Science Elective II",7
+28,Experiential Learning in Data Science,CMSE,495,25;22;2,,,4,,,"Experiential Learning in Data Science",8
+29,Advanced Data Science Elective III,CMSE,4XX,24,,,3,,,"Advanced Data Science Elective III",8
+30,Advanced Data Science Elective IV,CMSE,4XX,24,,,3,,,"Advanced Data Science Elective IV",8
