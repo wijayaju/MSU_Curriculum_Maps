@@ -31,27 +31,22 @@ MSU_Curriculum_Maps/
 ├── Manifest.toml
 ├── Project.toml
 ├── README.md
-├── data
-│   ├── 20250919_Registrars_Data(in).csv
-│   ├── CNS_Majors_Data.xlsx
-│   ├── Fake_majors.csv
-│   ├── Fake_registrar.csv
-│   ├── Univ_of_Arizona-Aero.csv
-│   └── ~$CNS_Majors_Data.xlsx
-├── notebooks
+├── data/
+│   └── Univ_of_Arizona-Aero.csv
+├── notebooks/
+│   ├── reproducibility.ipynb
 │   └── test_install_notebook.ipynb
-├── outputs
+├── outputs/
 ├── pyproject.toml
-├── python
+├── python/
 │   └── scripts
-│       ├── build_ca_curricula_v2.py
-│       └── preprocess.py
+│       ├── build_ca_curricula_v1.py
+│       └── build_ca_curricula_v2.py
 ├── uv.lock
-└── webapi
+└── webapi/
     ├── Quick Run Instructions.pdf
     ├── curriculum_graph.html
     └── requirements_webapi.txt
-
 ```
 
 
