@@ -115,7 +115,9 @@ def pad_row(values, total_cols=11):
 
 def read_registrar_csv(path):
     """
-    Try common encodings used in registrar exports.
+    Try common encodings used in registrar exports. 
+    (This is basically cause Oracle's SQL Developer defaults to cp1252 encoding for CSV exports, 
+    which can cause issues if the data contains characters that aren't valid in that encoding.)
     """
     encodings_to_try = ["utf-8", "utf-8-sig", "cp1252", "latin1"]
 
