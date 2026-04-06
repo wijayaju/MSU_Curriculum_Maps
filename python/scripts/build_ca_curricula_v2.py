@@ -115,9 +115,7 @@ def pad_row(values, total_cols=11):
 
 def read_registrar_csv(path):
     """
-    Try common encodings used in registrar exports. 
-    (This is basically cause Oracle's SQL Developer defaults to cp1252 encoding for CSV exports, 
-    which can cause issues if the data contains characters that aren't valid in that encoding.)
+    Try common encodings used in registrar exports.
     """
     encodings_to_try = ["utf-8", "utf-8-sig", "cp1252", "latin1"]
 
@@ -400,21 +398,220 @@ def build_curricula(registrar_csv, majors_xlsx, output_dir):
 
 
 # -----------------------------
+# Analytics JSON builder
+# Produces the data blob that gets embedded in curriculum_analytics.html.
+# Optionally merges in grade data from enrich_with_grades.py output.
+# -----------------------------
+
+def build_analytics_json(registrar_csv, majors_xlsx, output_dir,
+                          grades_json=None):
+    """
+    Build outputs/analytics_data.json, which is the single data file
+    consumed by curriculum_analytics.html.
+
+    If grades_json points to the output of enrich_with_grades.py, each
+    course entry is enriched with avg_gpa, dfw_rate, total_students,
+    sections, most_recent_semester, trend_gpa, and grade-bucket pct_*.
+    """
+    import json
+    import networkx as nx
+
+    print("Building analytics JSON ...", flush=True)
+
+    registrar = read_registrar_csv(registrar_csv)
+    majors    = pd.read_excel(majors_xlsx)
+
+    prereq_map    = parse_prereq_courses(registrar)
+    course_info   = {}
+    for _, row in registrar.iterrows():
+        s = row.get("SUBJECT", ""); c = row.get("CRSE_CODE", "")
+        if pd.isna(s) or pd.isna(c):
+            continue
+        code = normalize_course_code(f"{str(s).strip()} {str(c).strip()}")
+        if code and code not in course_info:
+            title = row.get("COURSE_TITLE_LONG", "")
+            dept  = row.get("ACAD_ORG_U1_DESCRFORMAL", "")
+            course_info[code] = {
+                "title": "" if pd.isna(title) else str(title),
+                "dept":  "" if pd.isna(dept)  else str(dept),
+            }
+
+    plan_titles = majors["Plan Title"].dropna().unique()
+
+    # Build per-plan course lists
+    plans_data = {}
+    course_plan_membership = defaultdict(set)
+
+    for plan in plan_titles:
+        plan_df = majors[majors["Plan Title"] == plan].copy()
+        if plan_df.empty:
+            continue
+        courses_in_plan = []
+        for _, r in plan_df.iterrows():
+            course = str(r["Course"]).strip() if not pd.isna(r["Course"]) else ""
+            norm   = normalize_course_code(course)
+            if not norm:
+                continue
+            year = str(r.get("Year", ""))
+            term = str(r.get("Term", ""))
+            tn   = term_to_number(year, term)
+            cred = r.get("Credits Max")
+            if pd.isna(cred):
+                cred = r.get("Credits Min", 3)
+            if pd.isna(cred):
+                cred = 3
+            if isinstance(cred, float) and cred == int(cred):
+                cred = int(cred)
+            courses_in_plan.append({
+                "code": norm, "year": year, "term": term,
+                "term_num": tn, "credits": cred,
+            })
+            course_plan_membership[norm].add(plan)
+
+        plans_data[plan] = {
+            "award_type":  str(plan_df["Award Type"].iloc[0]),
+            "major_title": (str(plan_df["Major Title"].iloc[0])
+                            if not pd.isna(plan_df["Major Title"].iloc[0])
+                            else str(plan)),
+            "major_code":  str(plan_df["Major"].iloc[0]),
+            "courses":     courses_in_plan,
+        }
+
+    all_cns_courses = set(
+        c["code"] for pd_data in plans_data.values() for c in pd_data["courses"]
+    )
+
+    # Build directed graph (full prereq graph for chain depth,
+    # CNS-only graph for edges shown in dashboard)
+    G_full = nx.DiGraph()
+    for code in all_cns_courses:
+        G_full.add_node(code)
+        for prereq in prereq_map.get(code, []):
+            G_full.add_edge(prereq, code)
+
+    # Remove cycles to get DAG for chain depth
+    G_dag = G_full.copy()
+    for _ in range(10):
+        try:
+            cycle = nx.find_cycle(G_dag)
+            G_dag.remove_edge(*cycle[0])
+        except nx.NetworkXNoCycle:
+            break
+
+    chain_depth = {}
+    try:
+        for node in nx.topological_sort(G_dag):
+            preds = list(G_dag.predecessors(node))
+            chain_depth[node] = (
+                max(chain_depth.get(p, 0) for p in preds) + 1
+                if preds else 0
+            )
+    except nx.NetworkXUnfeasible:
+        chain_depth = {n: 0 for n in G_dag.nodes}
+
+    G_cns = nx.DiGraph()
+    for code in all_cns_courses:
+        G_cns.add_node(code)
+    for code in all_cns_courses:
+        for prereq in prereq_map.get(code, []):
+            if prereq in all_cns_courses:
+                G_cns.add_edge(prereq, code)
+
+    in_degree    = dict(G_cns.in_degree())
+    out_degree   = dict(G_cns.out_degree())
+    betweenness  = nx.betweenness_centrality(G_cns)
+    cross_major  = {c: len(p) for c, p in course_plan_membership.items()}
+
+    # Load grades enrichment if provided
+    grades: dict = {}
+    if grades_json and os.path.exists(grades_json):
+        with open(grades_json, encoding="utf-8") as f:
+            grades = json.load(f)
+        matched = sum(1 for c in all_cns_courses if c in grades)
+        print(f"  Grades data: {matched}/{len(all_cns_courses)} CNS courses matched",
+              flush=True)
+    elif grades_json:
+        print(f"  Warning: grades file not found: {grades_json}", flush=True)
+        print("  Run enrich_with_grades.py first to add GPA/DFW data.", flush=True)
+
+    # Assemble final analytics object
+    course_analytics = {}
+    for code in all_cns_courses:
+        entry = {
+            "title":             course_info.get(code, {}).get("title", ""),
+            "dept":              course_info.get(code, {}).get("dept",  ""),
+            "in_degree":         in_degree.get(code, 0),
+            "out_degree":        out_degree.get(code, 0),
+            "chain_depth":       chain_depth.get(code, 0),
+            "cross_major_count": cross_major.get(code, 0),
+            "betweenness":       round(betweenness.get(code, 0), 4),
+            "prereqs":           sorted(prereq_map.get(code, [])),
+            "plans":             sorted(course_plan_membership.get(code, [])),
+        }
+        if code in grades:
+            g = grades[code]
+            entry["avg_gpa"]             = g.get("avg_gpa")
+            entry["dfw_rate"]            = g.get("dfw_rate")
+            entry["total_students"]      = g.get("total_students")
+            entry["sections"]            = g.get("sections")
+            entry["most_recent_semester"]= g.get("most_recent_semester", "")
+            entry["trend_gpa"]           = g.get("trend_gpa", [])
+            # pass through all pct_* bucket fractions
+            for k, v in g.items():
+                if k.startswith("pct_"):
+                    entry[k] = v
+        course_analytics[code] = entry
+
+    output = {
+        "plans":            plans_data,
+        "course_analytics": course_analytics,
+        "graph_edges":      [[u, v] for u, v in G_cns.edges()],
+        "summary": {
+            "total_plans":   len(plans_data),
+            "total_courses": len(all_cns_courses),
+            "total_edges":   G_cns.number_of_edges(),
+            "has_grades":    bool(grades),
+        },
+    }
+
+    out_path = os.path.join(output_dir, "analytics_data.json")
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(output, f, separators=(",", ":"))
+
+    size_kb = os.path.getsize(out_path) // 1024
+    print(f"Analytics JSON written → {out_path}  ({size_kb:,} KB)", flush=True)
+    return output
+
+
+# -----------------------------
 # CLI
 # -----------------------------
 
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--registrar", required=True)
-    parser.add_argument("--majors", required=True)
-    parser.add_argument("--output-dir", required=True)
+    parser = argparse.ArgumentParser(
+        description="Generate CA-format degree plan CSVs and analytics JSON."
+    )
+    parser.add_argument("--registrar",   required=True,
+                        help="Path to registrar CSV (prerequisite data)")
+    parser.add_argument("--majors",      required=True,
+                        help="Path to majors XLSX (CNS course lists)")
+    parser.add_argument("--output-dir",  required=True,
+                        help="Directory for output CSVs and analytics JSON")
+    parser.add_argument("--grades",      default=None,
+                        help="Path to grades_enriched.json from "
+                             "enrich_with_grades.py (optional)")
 
     args = parser.parse_args()
 
-    build_curricula(
+    # 1. Write per-plan CA-format CSVs
+    build_curricula(args.registrar, args.majors, args.output_dir)
+
+    # 2. Write analytics_data.json (with optional grades enrichment)
+    build_analytics_json(
         args.registrar,
         args.majors,
-        args.output_dir
+        args.output_dir,
+        grades_json=args.grades,
     )
