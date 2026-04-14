@@ -72,7 +72,7 @@ The workflow follows a staged design. The entire pipeline has been rebuilt as th
 
 ### Stage 1 - Data Cleaning (Python)
 
-`python/scripts/build_ca_curricula_v2.py`
+`scripts/python/build_ca_curricula_v2.py`
 
 * Parses the 2 datasets and extracts relevant columns
 * Normalizes prerequisite formatting
@@ -125,7 +125,7 @@ After installing the environment described in `INSTALL.md`:
 3. Run the cleaning stage:
 
 ```
-python src/python/scripts/build_ca_curricula_v2.py
+python scripts/python/build_ca_curricula_v2.py
 ```
 
 
