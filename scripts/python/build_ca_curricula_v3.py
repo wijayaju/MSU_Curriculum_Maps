@@ -1,5 +1,5 @@
 """
-build_ca_curricula_v2.py
+build_ca_curricula_v3.py
 ────────────────────────
 Converts a registrar prerequisite file and a degree-plan spreadsheet into:
   1. One CA-format CSV per degree plan  (outputs/degree_plans/*.csv)
@@ -68,12 +68,12 @@ Override any auto-detected column name or vocabulary map:
     Summer: 3
 
 Usage:
-    python build_ca_curricula_v2.py \\
+    python build_ca_curricula_v3.py \\
         --registrar  data/registrar.csv \\
         --majors     data/majors.xlsx \\
         --output-dir outputs/degree_plans
 
-    python build_ca_curricula_v2.py \\
+    python build_ca_curricula_v3.py \\
         --registrar  data/registrar.csv \\
         --majors     data/majors.xlsx \\
         --output-dir outputs/degree_plans \\
