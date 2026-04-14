@@ -33,7 +33,7 @@ import csv
 from pathlib import Path
 
 # Paths
-SCRIPT_DIR   = Path(__file__).resolve().parent                  # MSU_Curriculum_Maps/python/scripts/
+SCRIPT_DIR   = Path(__file__).resolve().parent                  # MSU_Curriculum_Maps/scripts/python/
 PROJECT_ROOT = SCRIPT_DIR.parents[1]                            # MSU_Curriculum_Maps/
 DATA_DIR     = PROJECT_ROOT / "data"                            # MSU_Curriculum_Maps/data
 OUTPUT_DIR   = PROJECT_ROOT / "outputs" / "ca_degree_plans"     # MSU_Curriculum_Maps/outputs/ca_degree_plans
