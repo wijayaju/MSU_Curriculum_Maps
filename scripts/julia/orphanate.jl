@@ -71,11 +71,12 @@ end
 
 function write_ca_csv(filepath::AbstractString, header_lines::Vector{String}, df::DataFrame)
     open(filepath, "w") do io
-        for line in header_lines[1:end-1]
+        for line in header_lines
             println(io, line)
         end
-        CSV.write(io, df)
     end
+
+    CSV.write(filepath, df; append=true, writeheader=false)
 end
 
 function orphanate_curriculum(
