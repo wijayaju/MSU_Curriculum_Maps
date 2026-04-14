@@ -17,11 +17,8 @@ uv run scripts/python/enrich_with_grades.py
 
 ## Generate Degree Plan CSVs and Analytics JSON
 ```bash
-uv run python python/scripts/build_ca_curricula_v3.py 
---registrar data/20250919_Registrars_Data_in_.csv 
---majors data/CNS_Majors_Data.xlsx 
---output-dir outputs/degree_plans 
---grades outputs/grades_enriched.json
+uv run python scripts/python/build_ca_curricula_v3.py --registrar data/20250919_Registrars_Data\(in
+\).csv --majors data/CNS_Majors_Data.xlsx --output-dir outputs/degree_plans --grades outputs/grades_enriched.json
 # outputs/degree_plans/*.csv CA-format degree plan CSVs
 # outputs/degree_plans/analytics_data.json embedded in dashboard
 ```
