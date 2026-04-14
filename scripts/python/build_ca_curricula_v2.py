@@ -350,6 +350,39 @@ def parse_prereq_courses(registrar_df, cols):
     return prereqs
 
 
+# ── Course title lookup ───────────────────────────────────────────────────────
+
+def build_course_title_map(registrar_df, reg_cols):
+    """
+    Build a mapping of normalized course code -> COURSE_TITLE_LONG
+    (or whichever column maps to the 'title' role).
+    Returns an empty dict if no title column was detected.
+    """
+    col_title = reg_cols.get("title")
+    if not col_title:
+        return {}
+
+    col_subj = reg_cols["subject"]
+    col_num  = reg_cols["number"]
+    title_map = {}
+
+    for _, row in registrar_df.iterrows():
+        subj = row.get(col_subj, "")
+        num  = row.get(col_num,  "")
+        if pd.isna(subj) or pd.isna(num):
+            continue
+        code = normalize_course_code(f"{str(subj).strip()} {str(num).strip()}")
+        if not code or code in title_map:
+            continue
+        val = row.get(col_title)
+        if not pd.isna(val):
+            title_map[code] = str(val).strip()
+
+    print(f"  Course title map: {len(title_map):,} entries from '{col_title}'",
+          flush=True)
+    return title_map
+
+
 # ── CA CSV writer ─────────────────────────────────────────────────────────────
 
 def build_curricula(registrar_path, majors_path, output_dir,
@@ -374,7 +407,9 @@ def build_curricula(registrar_path, majors_path, output_dir,
     inst = config.get("institution", institution) or ""
     syst = config.get("system_type", system_type) or "semester"
 
-    prereq_map  = parse_prereq_courses(registrar, reg_cols)
+    prereq_map       = parse_prereq_courses(registrar, reg_cols)
+    course_title_map = build_course_title_map(registrar, reg_cols)  # ← NEW
+
     plan_col    = maj_cols["plan"]
     plan_titles = majors[plan_col].dropna().unique()
 
@@ -423,6 +458,9 @@ def build_curricula(registrar_path, majors_path, output_dir,
             if isinstance(cred, float) and cred == int(cred):
                 cred = int(cred)
 
+            # Look up the canonical (long) title from the registrar  ← NEW
+            canonical_name = course_title_map.get(norm, "") if norm else ""
+
             cid = next_id
             next_id += 1
             rows.append({
@@ -430,7 +468,8 @@ def build_curricula(registrar_path, majors_path, output_dir,
                 "Normalized Course": norm, "Prefix": prefix, "Number": number,
                 "Prerequisites": "", "Corequisites": "",
                 "Strict-Corequisites": "", "Credit Hours": cred,
-                "Institution": "", "Canonical Name": "", "Term": term_n,
+                "Institution": "", "Canonical Name": canonical_name,  # ← UPDATED
+                "Term": term_n,
             })
             if norm:
                 course_id_map[norm]   = cid
