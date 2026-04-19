@@ -1,180 +1,282 @@
-# MSU Curriculum Project
+# MSU Curriculum Maps
+**Spring 2026 | CMSE 495 Data Science Capstone**
+**Michigan State University**
 
+**Authors / Contributors**
 Arkesh Das
 Samuel Abdul
 Justin Wijaya
 Zachary Kozlowski
 
-CMSE 495 Data Science Capstone
+## Overview
 
+This repository contains the final deliverables for a **Spring 2026 CMSE 495 Data Science Capstone project** completed in partnership with **Dr. Stephen Thomas and Michigan State University curriculum stakeholders**.
 
-## About
+The goal of this project was to build a pipeline that transforms raw MSU curriculum data into structured prerequisite networks that can be analyzed and visualized using the **Curricular Analytics** framework.
 
-This repository contains an evolving data pipeline for transforming raw Michigan State University curriculum data into structured course dependency graphs.
+At a high level, this project:
 
-The project standardizes registrar and major requirement datasets, constructs prerequisite networks, and prepares outputs for structural analysis and future integration with the Curricular Analytics ecosystem.
+* Cleans and standardizes registrar and major requirement datasets
+* Converts them into Curricular Analytics compatible CSVs
+* Generates curriculum graphs and structural metrics
+* Explores ways to enrich those graphs with additional data (e.g., grades)
 
-The long term objective is to support scalable curriculum analysis across semesters and colleges using a modular Python to Julia workflow.
+This repository represents the **final state of the project** at the end of the semester and is intended to serve as a clear starting point for future teams or stakeholders.
 
-This repository represents the active refactoring of prior exploratory work from previous semesters into a reproducible, script driven architecture, using the Curricular Analytics Julia package.
+## Project Goals
 
-## Install Instructions
+* Create a reproducible pipeline for curriculum mapping
+* Enable structural analysis of degree plans
+* Provide tools for visualizing prerequisite pathways
+* Support data-informed curriculum design decisions
 
-Installation instructions are provided in [INSTALL.md](INSTALL.md)
+## Recommended Workflow
+
+If you are new to this project, follow this order:
+
+1. **Install everything**
+   → See [INSTALL.md](INSTALL.md)
+
+2. **Verify your setup**
+   → Run `notebooks/test_install_notebook.ipynb`
+
+3. **Run the full pipeline + analysis**
+   → Use `notebooks/reproducibility.ipynb`
+
+This path will walk you through the full system from raw data to visualization and analysis.
 
 ## Repository Structure
 
 ```
 MSU_Curriculum_Maps/
 ├── INSTALL.md
-├── LICENSE.txt
-├── Manifest.toml
-├── Project.toml
 ├── README.md
 ├── data/
-│   └── Univ_of_Arizona-Aero.csv
 ├── notebooks/
-│   ├── reproducibility.ipynb
-│   └── test_install_notebook.ipynb
 ├── outputs/
-├── pyproject.toml
-├── python/
-│   └── scripts
-│       ├── build_ca_curricula_v1.py
-│       └── build_ca_curricula_v2.py
-├── uv.lock
-└── webapi/
-    ├── Quick Run Instructions.pdf
-    ├── curriculum_graph.html
-    └── requirements_webapi.txt
+├── scripts/
+│   ├── python/
+│   └── julia/
+├── website/
+├── upload_to_curricularanalytics.md
+├── local_website_instructions.md
+└── project configuration files
 ```
 
+### Key Components
 
-## Data
+#### `data/`
 
-The `data/` directory is initially empty due to saftey reasons, but the user is able to add:
+Contains input datasets.
 
-* Registrar course data exports
-* College provided major requirement datasets
-* Synthetic datasets for testing and reproducibility
+* **NOT included in repo:**
 
-**the repo comes with one sample dataset for the user to test functionality of packages and software**
+  * MSU Registrar data
+  * CNS Majors dataset
+  * These must be obtained through institutional access and placed manually
 
-The real datasets correspond to Fall 2025 and Fall ~2018. The pipeline is designed to operate on any similarly structured semester dataset placed in the `data/` directory.
+  Additionally, MSU Grades data is not included in this repository, but it can be accessed by following the instructions in section 6 of the [reproducability notebook](notebooks/reproducibility.ipynb)
 
-This project does not scrape live MSU SIS systems. All data are static exports obtained from administrative sources.
+* **Included example datasets:**
 
-However, the registrar datasets are structured in Oracle PeopleSoft format, which is the underlying system used by MSU SIS. As a result, the pipeline is compatible with PeopleSoft structured exports and could be extended in the future to support more direct SIS integrated workflows.
+  * `Univ_of_Arizona-Aero.csv`
+    → Official example dataset from Curricular Analytics documentation (used for testing)
 
-## __Current__ Pipeline Architecture
+#### `outputs/`
 
-The workflow follows a staged design. The entire pipeline has been rebuilt as the previous semesters work/goals were different than ours.
+Generated curriculum CSV files in Curricular Analytics format.
 
-### Stage 1 - Data Cleaning (Python)
+* Includes example outputs:
 
-`scripts/python/build_ca_curricula_v2.py`
+  * `fake_data_sci.csv`
+  * Variants showing different math entry points (MTH 103 vs MTH 132)
 
-* Parses the 2 datasets and extracts relevant columns
-* Normalizes prerequisite formatting
-* Builds CurricularAnalytics formatted datasets
-* Resolves structural inconsistencies
-* Crosschecks information across input data
-* Produces ready to use CSVs for CurricularAnalytics
+These are **hand-crafted examples** to:
 
-Cleaned outputs are written to the `outputs/` directory.
+* Demonstrate what MSU outputs look like
+* Allow visualization without restricted datasets
+* Highlight structural differences (e.g., starting math level bottlenecks)
+
+#### `notebooks/`
+
+* `test_install_notebook.ipynb`
+  → Verifies environment setup using demo data
+
+* `reproducibility.ipynb`
+  → Main walkthrough of the pipeline, visualization, and analysis
+
+#### `scripts/python/`
+
+* `build_ca_curricula_v2.py`
+  → **Primary pipeline script (recommended)**
+
+* `build_ca_curricula_v3.py`
+  → Used for website prototype (adds analytics + JSON output)
+
+* `build_ca_curricula_v1.py`
+  → Legacy prototype, retained for reference only
+
+* `enrich_with_grades.py`
+  → Integrates MSUGrades dataset (see [reproducability notebook](notebooks/reproducibility.ipynb))
+
+#### `scripts/julia/`
+
+* `course_analyzer.jl`
+  → Supporting analysis functions
+
+* `orphanate.jl`
+  → Removes disconnected courses to reveal core prerequisite structure
+
+#### `website/`
+
+Contains **local prototype dashboards** for curriculum exploration.
+
+* These are:
+
+  * Functional locally
+  * Not production-ready
+  * Intended as a **concept for future development**
+
+#### `upload_to_curricularanalytics.md`
+
+Alternative workflow for uploading generated curricula to:
+[https://curricularanalytics.org](https://curricularanalytics.org)
+
+Useful for:
+
+* Sharing curricula
+* Viewing graphs without full local setup
+
+## Pipeline Overview
+
+### Stage 1, Data Processing (Python)
+
+`build_ca_curricula_v2.py`
+
+* Parses registrar + majors datasets
+* Standardizes course and prerequisite structure
+* Resolves inconsistencies
+* Outputs Curricular Analytics formatted CSVs
+
+### Stage 2, Data Output
+
+* CSV files are written to `outputs/`
+* Each file represents a single degree plan
+
+### Stage 3, Visualization (Julia)
+
+Using `reproducibility.ipynb`:
+
+* Load a curriculum
+* Generate interactive graphs
+* Explore prerequisite structure
+
+### Stage 4, Analysis
+
+Metrics include:
+
+* Blocking factor
+* Delay factor
+* Centrality
+* Complexity
+
+### Stage 5, Optional Enhancements
+
+* MSU Grades integration
+* Orphanate tool for cleaner graphs
+
+---
+
+## Website Prototype
+
+We created a local dashboard to demonstrate how this data could be presented in a more user-friendly way.
+
+This includes:
+
+* Dropdown-based degree selection
+* Interactive graph exploration
+* Course-level statistics (GPA, DFW, etc.)
+
+Important notes:
+
+* This is a **prototype only**
+* Not intended for official or production use
+* Serves as a starting point for future teams
+
+See: `local_website_instructions.md`
 
 
-### Stage 2 - Data Loading
+## Data Notes
 
-`/outputs/`
+* Real MSU datasets are **not included** due to access restrictions
+* Pipeline is designed for **PeopleSoft-style exports**
+* Provided majors dataset was **hand-constructed and not reproducible** (See Future Directions section)
 
-If everything worked correctly, the script will have created many CSV files to the output directory, the user is now able to browse through the files and find the curriculum they are interested in, they will be able to explore more about it in the Julia Notebooks
+Because of this:
 
+* Re-running the entire pipeline requires institutional data access
+* Example datasets are included to demonstrate functionality
 
-### Stage 3 - Julia Integration and Graph Building
+## Limitations
 
-`/notebooks/reproducibility.ipynb`
+* Heavy dependence on data quality and structure
+* Majors dataset is not reproducible from source systems 
+* Ambiguous requirement groupings (e.g., “choose one of”) are not fully resolved
+* Curricular Analytics package limits customization and extensibility
+* Visualization layer is not easily extendable without modifying underlying tools
 
-Once the user has found what they are interested in, they can use their chosen dataset with the notebook found in this repository, if everything is installed correctly, they will be able to generate graphs of curriculum plans using the CurricularAnalytics package.
+## Future Directions
 
+This project is a strong starting point, but several improvements are needed for real-world use:
 
+### 1. Automated Data Pipeline
 
-### Stage 4 - Curriculum Insights
+* Build a scraper or extraction pipeline from MSU Registrar systems
+* Use AI-assisted transformations to standardize curriculum data
+* Eliminate reliance on manually curated datasets
 
-Using the notebook the user can also explore CurricularAnalytics statistics generated in the notebooks, the user is able to explore statistics such as blocking factor, delay factor, centrailtiy, and complexity, these are detailed in the notebook.
+### 2. Improved Accessibility
 
-If there time is available, we plan to integrate data from MSUGrades, using the courses from our cleaning script, this allows us to access a different dataset that contains course information (grades, instructors, semesters) and use this in conjunction with CurriculumAnalytics.
+* Develop a fully hosted web platform (similar to MSUGrades)
+* Allow non-technical users to explore curriculum maps
 
-## How to Interact With This Repository
+### 3. Additional Data Integration
 
-### Installation
+* Overlay variables such as:
 
-All installation instructions are provided in:
+  * Course modality
+  * Class size
+  * Location
+  * Failure rates
 
-```
-INSTALL.md
-```
+### 4. Tooling Improvements
 
-
-### Running the Pipeline
-
-After installing the environment described in `INSTALL.md`:
-
-1. Activate the project environment
-2. Place the desired semester datasets inside `data/`
-3. Run the cleaning stage:
-
-```
-python scripts/python/build_ca_curricula_v2.py
-```
-
-
-Generated CSV files will appear in:
-
-```
-outputs/
-```
+* Modify or extend Curricular Analytics source code
+* Explore the Python adaptation of the Curricular Analytics to reduce setup complexity
 
 
-### Reproducibility and Figures
+## Videos
 
-Figure level reproducibility instructions are documented in:
+Project videos can be found here for additional details:
 
-```
-notebooks/reproducibility.ipynb
-```
-
-This notebook includes:
-
-* Installation testing
-* Data loading
-* Data with CurricularAnalytics
-* Graph Vizualization
-* Curriculum Insights
-
-All figures used in final reports or presentations will have corresponding reproducibility instructions.
-
-
-## Goals
-
-* Refactor exploratory notebooks into modular scripts
-* Standardize preprocessing of registrar and major datasets
-* Construct reusable curriculum dependency graphs
-* Enable semester and college level portability
-* Prepare cleaned outputs for Julia based curricular analytics
-* Deliver an MVP capable of structured curriculum graph generation
-
-
-## Research Questions
-
-* What structural bottlenecks emerge from prerequisite networks?
-* How do centrality and dependency depth vary across majors?
-* Can structural metrics inform curriculum design decisions?
+* [Project Plan Video](https://youtu.be/M4_gURakRH0)
+* [MVP Video](https://www.youtube.com/watch?v=4PuFhvoS6lI)
+* Final Project Video: [LINK HERE]
 
 
 ## Community Partner
 
-Michigan State University academic units and administrative stakeholders.
+Dr. Stephen Thomas
+Michigan State University
+
+
+## Acknowledgements
+
+We would like to thank:
+
+* Dr. Stephen Thomas for guidance and project support
+* The CMSE 495 instructional team for feedback throughout the semester
+* Prior project teams for foundational work, especially Lauryn Crandall
 
 
 ## License
