@@ -270,7 +270,7 @@ This project is a strong starting point, but several improvements are needed for
 
 Project videos can be found here for additional details:
 
-* Final Project Video: [LINK HERE]
+* [Final Project Video](https://www.youtube.com/watch?v=KNM3mRicnX8)
 * [MVP Video](https://www.youtube.com/watch?v=4PuFhvoS6lI)
 * [Project Plan Video](https://youtu.be/M4_gURakRH0)
 
